@@ -173,30 +173,30 @@ RUN mkdir warmup \
     && rm -rf warmup \
     && rm -rf /tmp/NuGetScratch
 
-# Terraform, used to run some testsuites on AWS.
-RUN TERRAFORM_VERSION=0.12.24 && \
-    wget -O terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" && \
-    unzip terraform.zip && \
-    mv terraform /usr/bin && \
-    rm -f terraform.zip && \
-    terraform --version
-
-# AWS cli's, used to run some testsuites on AWS.
-RUN AWS_CLI_VERSION=2.1.38 && \
-    curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o "awscliv2.zip" && \
-    unzip awscliv2.zip && \
-    ./aws/install && \
-    aws --version
-
-ADD rabbitmq-server-buildenv_linux-erlang-25.0-elixir-latest-dockerfile/docker/rabbitmq-server-buildenv/aws.pgp /tmp/aws.pgp
-RUN ECS_CLI_VERSION=1.21.0 && \
-    curl -Lo /usr/local/bin/ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-v${ECS_CLI_VERSION} && \
-    gpg --import /tmp/aws.pgp && \
-    rm /tmp/aws.pgp && \
-    curl -Lo ecs-cli.asc https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-v${ECS_CLI_VERSION}.asc && \
-    gpg --verify ecs-cli.asc /usr/local/bin/ecs-cli && \
-    chmod +x /usr/local/bin/ecs-cli && \
-    ecs-cli --version
+## # Terraform, used to run some testsuites on AWS.
+## RUN TERRAFORM_VERSION=0.12.24 && \
+##     wget -O terraform.zip "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip" && \
+##     unzip terraform.zip && \
+##     mv terraform /usr/bin && \
+##     rm -f terraform.zip && \
+##     terraform --version
+## 
+## # AWS cli's, used to run some testsuites on AWS.
+## RUN AWS_CLI_VERSION=2.1.38 && \
+##     curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-${AWS_CLI_VERSION}.zip" -o "awscliv2.zip" && \
+##     unzip awscliv2.zip && \
+##     ./aws/install && \
+##     aws --version
+## 
+## ADD rabbitmq-server-buildenv_linux-erlang-25.0-elixir-latest-dockerfile/docker/rabbitmq-server-buildenv/aws.pgp /tmp/aws.pgp
+## RUN ECS_CLI_VERSION=1.21.0 && \
+##     curl -Lo /usr/local/bin/ecs-cli https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-v${ECS_CLI_VERSION} && \
+##     gpg --import /tmp/aws.pgp && \
+##     rm /tmp/aws.pgp && \
+##     curl -Lo ecs-cli.asc https://amazon-ecs-cli.s3.amazonaws.com/ecs-cli-linux-amd64-v${ECS_CLI_VERSION}.asc && \
+##     gpg --verify ecs-cli.asc /usr/local/bin/ecs-cli && \
+##     chmod +x /usr/local/bin/ecs-cli && \
+##     ecs-cli --version
 
 # https://github.com/aws/aws-cli/issues/5038
 RUN apt-get install -y -V --fix-missing --no-install-recommends \
